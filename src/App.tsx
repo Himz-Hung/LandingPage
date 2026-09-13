@@ -11,7 +11,9 @@ import { StageScene } from './three/StageScene'
 import { Contact } from './sections/Contact'
 import { Hero } from './sections/Hero'
 import { Journal } from './sections/Journal'
+import { Partners } from './sections/Partners'
 import { StackingWork } from './sections/StackingWork'
+import { Testimonials } from './sections/Testimonials'
 
 function App() {
   useSmoothScroll()
@@ -43,6 +45,8 @@ function App() {
       <main className="relative z-10">
         <Hero />
         <StackingWork />
+        <Partners />
+        <Testimonials />
         <Journal />
       </main>
 

@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { getQuality } from './quality'
 
 // three.js nằm sau import động nên chỉ tải khi qua được vòng kiểm tra bên dưới
 const StageCanvas = lazy(() => import('./StageCanvas'))
@@ -14,10 +15,8 @@ export function StageScene() {
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const small = window.matchMedia('(max-width: 767px)').matches
-    if (reduced || small || navigator.hardwareConcurrency <= 4) return
-    setEnabled(true)
+    // Điện thoại vẫn dựng cảnh, chỉ hạ chất lượng — xem quality.ts
+    if (getQuality().enabled) setEnabled(true)
   }, [])
 
   useEffect(() => {

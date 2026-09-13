@@ -1,6 +1,7 @@
 import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
+import { getQuality } from './quality'
 
 type Uniforms = {
   uBeat: { value: number }
@@ -78,7 +79,10 @@ export function useSwimPath({ group, progress, uniforms, positionOut }: Options)
     const angle = p * Math.PI * 2 * SWIM.turns
     // Bán kính dao động theo một tần số khác hẳn, nên vòng xoáy
     // lúc rộng lúc hẹp thay vì đều tăm tắp
-    const radius = SWIM.radius * (0.72 + 0.28 * Math.sin(p * Math.PI * 3.4 + 0.9))
+    const radius =
+      SWIM.radius *
+      getQuality().radiusScale *
+      (0.72 + 0.28 * Math.sin(p * Math.PI * 3.4 + 0.9))
 
     out.set(
       Math.cos(angle) * radius,

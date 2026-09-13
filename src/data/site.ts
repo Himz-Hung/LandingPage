@@ -167,6 +167,32 @@ export const testimonials = [
   },
 ]
 
+export const partners = {
+  eyebrow: 'Đối tác',
+  title: 'Những cái tên đã đồng hành.',
+  body: 'Hơn 180 doanh nghiệp đã tin tưởng giao chương trình cho chúng tôi, nhiều nơi quay lại từ năm này qua năm khác.',
+  /**
+   * Đang để dạng chữ. Muốn dùng logo thật thì thêm trường logo: '/logos/ten.svg'
+   * rồi đổi <span> thành <img> trong Partners.tsx.
+   */
+  logos: [
+    'Minh Phát Group',
+    'Vietcare',
+    'Thanh Âm Mùa Hạ',
+    'Đại Tín Bank',
+    'Nam Long Foods',
+    'Hải Đăng Logistics',
+    'An Khang Pharma',
+    'Trường Sơn Auto',
+    'Bách Việt Tech',
+    'Phú Mỹ Land',
+    'Sao Mai Media',
+    'Tân Hiệp Industrial',
+  ],
+  note: 'Khách quay lại sau chương trình đầu tiên',
+  retention: 76,
+}
+
 export const gallery = {
   eyebrow: 'Hậu trường',
   title: 'Những giờ trước khi đèn sáng.',

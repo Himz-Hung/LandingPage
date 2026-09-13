@@ -2,10 +2,11 @@ import { useFBO } from '@react-three/drei'
 import { createPortal, useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef, type ReactNode } from 'react'
 import * as THREE from 'three'
+import { getQuality } from './quality'
 import { FULLSCREEN_VERT, RIPPLE_COMPOSITE, RIPPLE_SIM } from './ripple'
 import { useThemeColors } from './useThemeColors'
 
-const SIM_SIZE = 256
+const SIM_SIZE = getQuality().simSize
 
 /**
  * Biến cả trang thành một mặt hồ.

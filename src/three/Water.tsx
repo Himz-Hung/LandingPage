@@ -1,11 +1,12 @@
 import { useFrame } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
+import { getQuality } from './quality'
 import { useThemeColors } from './useThemeColors'
 
 /* ------------------------------------------------------- bụi lơ lửng trong nước */
 
-const MOTES = 320
+const MOTES = getQuality().motes
 
 const moteVertex = /* glsl */ `
 uniform float uTime;

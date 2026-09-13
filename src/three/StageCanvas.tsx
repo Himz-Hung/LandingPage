@@ -3,6 +3,7 @@ import { Suspense, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { Koi } from './Koi'
 import { GltfKoi, useKoiModel } from './KoiModel'
+import { getQuality } from './quality'
 import { Water } from './Water'
 import { WaterCeiling } from './WaterCeiling'
 import { WaterSurface } from './WaterSurface'
@@ -25,6 +26,7 @@ type Follow = {
  * trễ một nhịp thì cá lúc dẫn trước lúc lùi lại, khung hình mới có nhịp thở.
  */
 function CameraRig({ target, depth }: Follow) {
+  const quality = getQuality()
   const desired = useMemo(() => new THREE.Vector3(), [])
   const look = useMemo(() => new THREE.Vector3(), [])
   const smoothLook = useRef(new THREE.Vector3(0, 0, 0))
@@ -42,7 +44,7 @@ function CameraRig({ target, depth }: Follow) {
     const t = THREE.MathUtils.clamp(below / 14, 0, 1)
 
     const lift = THREE.MathUtils.lerp(1.2, 2.4, t)
-    desired.set(fish.x * 0.35, fish.y + lift, fish.z * 0.35 + 8.2)
+    desired.set(fish.x * 0.35, fish.y + lift, fish.z * 0.35 + quality.camDistance)
     state.camera.position.lerp(desired, Math.min(1, dt * 1.4))
 
     // Mực nước ở y = 0, nên nhìn vào 0 là đường nước rơi đúng giữa khung
@@ -81,11 +83,12 @@ function KoiActor({
 export default function StageCanvas({ progress, visible }: Props) {
   const koiPos = useRef(new THREE.Vector3(0, -3.2, 0))
   const depth = useRef(0)
+  const quality = getQuality()
 
   return (
     <Canvas
-      dpr={[1, 1.8]}
-      camera={{ position: [0, -1.3, 8.2], fov: 48 }}
+      dpr={quality.dpr}
+      camera={{ position: [0, -1.3, quality.camDistance], fov: quality.fov }}
       frameloop={visible ? 'always' : 'never'}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
     >
