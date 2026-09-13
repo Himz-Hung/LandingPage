@@ -1,0 +1,233 @@
+@import 'tailwindcss';
+
+/*
+ * Hệ màu dùng token ngữ nghĩa, không gọi màu theo tên gốc.
+ * Mỗi token mô tả VAI TRÒ (nền, chữ, viền, nhấn) nên khi đổi theme
+ * mọi lớp chồng lên nhau tự khớp, không phải sửa từng component.
+ *
+ *   canvas / surface  → nền trang, nền thẻ
+ *   ink / ink-2 / muted → chữ theo ba mức đậm nhạt
+ *   line              → viền, đường kẻ
+ *   accent / on-accent→ màu nhấn và màu chữ nằm TRÊN nền nhấn
+ *   invert / on-invert→ section đảo tương phản (nền tối trong theme sáng
+ *                       và ngược lại), giữ được nhịp đậm–nhạt ở cả hai chế độ
+ */
+:root {
+  --c-canvas: #f6f4ef;
+  --c-surface: #edeae1;
+  --c-ink: #16150f;
+  --c-ink-2: #4a473e;
+  --c-muted: #756f62;
+  --c-line: #dcd6c9;
+  --c-accent: #c93a12;
+  --c-on-accent: #fff7f3;
+  --c-invert: #16150f;
+  --c-on-invert: #f6f4ef;
+
+  /* Chữ/viền nằm trên nền invert — tách riêng vì không suy ra được từ trên */
+  --c-invert-muted: rgb(246 244 239 / 0.58);
+  --c-invert-line: rgb(246 244 239 / 0.16);
+
+  --grain-blend: multiply;
+  --grain-opacity: 0.05;
+  --shadow-card: 0 24px 80px -40px rgb(22 21 15 / 0.4);
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --c-canvas: #0d0d0b;
+  --c-surface: #171713;
+  --c-ink: #f0ede3;
+  --c-ink-2: #b8b4a8;
+  --c-muted: #8a8579;
+  --c-line: #2b2a24;
+  /* Cam sáng hơn để đủ tương phản trên nền tối */
+  --c-accent: #ff6b3d;
+  /* Trên nền cam sáng thì chữ đen mới đọc được, chữ trắng thì không */
+  --c-on-accent: #14130e;
+  --c-invert: #f0ede3;
+  --c-on-invert: #0d0d0b;
+
+  --c-invert-muted: rgb(13 13 11 / 0.62);
+  --c-invert-line: rgb(13 13 11 / 0.14);
+
+  --grain-blend: screen;
+  --grain-opacity: 0.035;
+  --shadow-card: 0 24px 80px -40px rgb(0 0 0 / 0.75);
+
+  color-scheme: dark;
+}
+
+@theme {
+  --color-canvas: var(--c-canvas);
+  --color-surface: var(--c-surface);
+  --color-ink: var(--c-ink);
+  --color-ink-2: var(--c-ink-2);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-line);
+  --color-accent: var(--c-accent);
+  --color-on-accent: var(--c-on-accent);
+  --color-invert: var(--c-invert);
+  --color-on-invert: var(--c-on-invert);
+  --color-invert-muted: var(--c-invert-muted);
+  --color-invert-line: var(--c-invert-line);
+
+  --font-display: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--c-canvas);
+    color: var(--c-ink);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--c-accent);
+    color: var(--c-on-accent);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    /* Tiếng Việt xếp dấu chồng tầng (ề, ộ, ữ) nên cần nhiều khoảng dòng hơn
+       tiếng Anh. Để 0.95 thì dấu dòng dưới đâm vào chân chữ dòng trên. */
+    line-height: 1.04;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  /* Đảo nghĩa của token bên trong, nhờ vậy component con vẫn viết
+     text-ink/border-line như thường mà không cần biết mình đang nằm
+     trên nền đảo.
+
+     Tách làm hai lớp: .on-contrast CHỈ đổi token, .contrast-section đổi token
+     VÀ sơn nền. Thanh nav nổi trên menu mobile cần lớp đầu — nó phải lấy
+     đúng màu chữ của nền bên dưới nhưng không được tự sơn nền cho mình. */
+  .on-contrast,
+  .contrast-section {
+    --c-ink: var(--c-on-invert);
+    --c-ink-2: var(--c-invert-muted);
+    --c-muted: var(--c-invert-muted);
+    --c-line: var(--c-invert-line);
+    --c-canvas: var(--c-invert);
+    --c-surface: color-mix(in oklab, var(--c-invert) 92%, var(--c-on-invert));
+    color: var(--c-on-invert);
+  }
+
+  .contrast-section {
+    background-color: var(--c-invert);
+  }
+
+  /* Section nền đặc nhưng vẫn cho cảnh 3D phía sau lộ qua.
+     Đặt SAU .contrast-section để đè được background-color của nó. */
+  .contrast-veil {
+    background-color: color-mix(in oklab, var(--c-invert) 86%, transparent);
+    backdrop-filter: blur(6px);
+  }
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x var(--marquee-duration, 30s) linear infinite;
+}
+
+.marquee-track[data-direction='right'] {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track[data-pause='true'] {
+  animation-play-state: paused;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body[data-custom-cursor='true'],
+  body[data-custom-cursor='true'] * {
+    cursor: none;
+  }
+}
+
+/*
+ * Chuyển theme kiểu "lan từ nút ra".
+ * Tắt animation mặc định của View Transition rồi tự vẽ clip-path hình tròn
+ * trên ảnh chụp MỚI, nên theme mới loang dần đè lên theme cũ.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
