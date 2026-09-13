@@ -1,9 +1,11 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { nav, site } from '../data/site'
 import { EASE_OUT_EXPO } from '../lib/motion'
 import { useOnContrast } from '../lib/SectionTheme'
 import { scrollToSection, startScroll, stopScroll } from '../lib/useSmoothScroll'
+import { usePageTransition } from './PageTransition'
 import { Magnetic } from './Magnetic'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -12,6 +14,9 @@ export function Navbar() {
   const [hidden, setHidden] = useState(false)
   const [solid, setSolid] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const { pathname } = useLocation()
+  const { go: navigateTo } = usePageTransition()
+  const atHome = pathname === '/'
 
   // Nav phải lật màu khi nằm trên section đảo tương phản, VÀ khi menu mobile
   // đang mở — lúc đó nền dưới nav chính là tấm menu màu nghịch.
@@ -27,6 +32,15 @@ export function Navbar() {
 
   const go = (href: string) => {
     closeMenu()
+
+    // Đang ở trang con thì các mỏ neo (#work, #journal) không tồn tại.
+    // Phải về trang chủ trước, rồi đợi trang mới dựng xong mới cuộn tới.
+    if (!atHome) {
+      navigateTo('/')
+      setTimeout(() => scrollToSection(href), 1400)
+      return
+    }
+
     setTimeout(() => scrollToSection(href), menuOpen ? 500 : 0)
   }
 
@@ -61,7 +75,7 @@ export function Navbar() {
         >
           <div className="shell flex h-16 items-center justify-between md:h-20">
             <button
-              onClick={() => scrollToSection('#top')}
+              onClick={() => (atHome ? scrollToSection('#top') : navigateTo('/'))}
               className="font-display text-lg font-semibold tracking-tight"
             >
               {site.name}

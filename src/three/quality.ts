@@ -18,15 +18,10 @@ export type Quality = {
   simSize: number
   /** Số hạt bụi lơ lửng. */
   motes: number
-  /** Khoảng cách máy quay lùi ra sau cá. */
+  /** Khoảng cách máy quay lùi ra khỏi tâm cảnh. */
   camDistance: number
   /** Góc mở ống kính, độ. */
   fov: number
-  /**
-   * Hệ số thu hẹp đường bơi. Màn dọc rất hẹp ngang nên giữ nguyên bán kính
-   * là cá lượn thẳng ra ngoài khung hình rồi mất hút.
-   */
-  radiusScale: number
 }
 
 let cached: Quality | null = null
@@ -43,7 +38,6 @@ export function getQuality(): Quality {
       motes: 320,
       camDistance: 8.2,
       fov: 48,
-      radiusScale: 1,
     }
     return cached
   }
@@ -62,7 +56,6 @@ export function getQuality(): Quality {
     motes: mobile ? 130 : 320,
     camDistance: mobile ? 12.5 : 8.2,
     fov: mobile ? 58 : 48,
-    radiusScale: mobile ? 0.5 : 1,
   }
 
   return cached

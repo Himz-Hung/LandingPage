@@ -1,8 +1,6 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Suspense, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
-import { Koi } from './Koi'
-import { GltfKoi, useKoiModel } from './KoiModel'
 import { getQuality } from './quality'
 import { Water } from './Water'
 import { WaterCeiling } from './WaterCeiling'
@@ -13,82 +11,68 @@ type Props = {
   visible: boolean
 }
 
-type Follow = {
-  target: React.RefObject<THREE.Vector3>
-  depth: React.RefObject<number>
-}
+/** Lặn sâu thêm bao nhiêu khi cuộn hết trang. */
+const DESCENT = 34
+/** Độ sâu lúc mới vào, ngay dưới mặt nước. */
+const START_DEPTH = 1.3
 
 /**
- * Máy quay lặn theo cá.
+ * Máy quay tự lặn theo tiến độ cuộn.
  *
- * Bám bằng lò xo mềm chứ không dán cứng vào vị trí cá: nếu dán cứng thì
- * cá đứng yên trong khung hình và mất hẳn cảm giác đang đi xuống, còn bám
- * trễ một nhịp thì cá lúc dẫn trước lúc lùi lại, khung hình mới có nhịp thở.
+ * Bám bằng lò xo mềm chứ không gán thẳng độ sâu: cuộn bằng con lăn cho ra
+ * những bước nhảy rời rạc, gán thẳng thì hình giật theo từng nấc.
  */
-function CameraRig({ target, depth }: Follow) {
+function CameraRig({
+  progress,
+  depth,
+}: {
+  progress: React.RefObject<number>
+  depth: React.RefObject<number>
+}) {
   const quality = getQuality()
-  const desired = useMemo(() => new THREE.Vector3(), [])
   const look = useMemo(() => new THREE.Vector3(), [])
-  const smoothLook = useRef(new THREE.Vector3(0, 0, 0))
+  const smoothLook = useMemo(() => new THREE.Vector3(0, 0, 0), [])
+  const current = useRef(START_DEPTH)
+  const clock = useRef(0)
 
   useFrame((state, delta) => {
     const dt = Math.min(delta, 0.05)
-    const fish = target.current
-    if (!fish) return
+    clock.current += dt
 
-    const below = Math.max(0, -fish.y)
+    const target = START_DEPTH + (progress.current ?? 0) * DESCENT
+    current.current += (target - current.current) * Math.min(1, dt * 2.0)
 
-    // Chuyển dần trong quãng lặn đầu tiên: lúc mới vào thì máy quay nhìn
-    // NGANG MỰC NƯỚC để đường nước cắt ngang giữa khung hình trang đầu,
-    // lặn sâu rồi mới hạ mắt xuống nhìn theo cá.
+    const y = -current.current
+    const below = Math.max(0, current.current)
+
+    // Trôi ngang rất nhẹ cho khung hình không đứng chết khi ngừng cuộn
+    const driftX = Math.sin(clock.current * 0.18) * 0.7
+    const driftZ = Math.cos(clock.current * 0.13) * 0.4
+
+    state.camera.position.set(driftX, y, quality.camDistance + driftZ)
+
+    // Lúc mới vào nhìn ngang mực nước để đường nước cắt giữa khung hình,
+    // lặn sâu rồi mới hạ mắt nhìn thẳng về phía trước.
     const t = THREE.MathUtils.clamp(below / 14, 0, 1)
+    look.set(driftX, THREE.MathUtils.lerp(0, y - 2.5, t), 0)
+    smoothLook.lerp(look, Math.min(1, dt * 2.2))
+    state.camera.lookAt(smoothLook)
 
-    const lift = THREE.MathUtils.lerp(1.2, 2.4, t)
-    desired.set(fish.x * 0.35, fish.y + lift, fish.z * 0.35 + quality.camDistance)
-    state.camera.position.lerp(desired, Math.min(1, dt * 1.4))
-
-    // Mực nước ở y = 0, nên nhìn vào 0 là đường nước rơi đúng giữa khung
-    const lookY = THREE.MathUtils.lerp(0, fish.y - 1.2, t)
-    look.set(fish.x * 0.5 * t, lookY, fish.z * 0.5 * t)
-    smoothLook.current.lerp(look, Math.min(1, dt * 2.0))
-    state.camera.lookAt(smoothLook.current)
-
-    // Độ sâu dùng để làm tối dần mặt nước và cột nắng phía trên
     depth.current = below
   })
 
   return null
 }
 
-function KoiActor({
-  progress,
-  positionOut,
-}: {
-  progress: React.RefObject<number>
-  positionOut: React.RefObject<THREE.Vector3>
-}) {
-  const status = useKoiModel()
-
-  if (status === 'checking') return null
-  if (status === 'missing') return <Koi progress={progress} positionOut={positionOut} />
-
-  return (
-    <Suspense fallback={<Koi progress={progress} positionOut={positionOut} />}>
-      <GltfKoi progress={progress} positionOut={positionOut} />
-    </Suspense>
-  )
-}
-
 /** Phần nặng của cảnh nền: chỉ tải khi máy thật sự dựng WebGL. */
 export default function StageCanvas({ progress, visible }: Props) {
-  const koiPos = useRef(new THREE.Vector3(0, -3.2, 0))
   const depth = useRef(0)
   const quality = getQuality()
 
   return (
     <Canvas
       dpr={quality.dpr}
-      camera={{ position: [0, -1.3, quality.camDistance], fov: quality.fov }}
+      camera={{ position: [0, -START_DEPTH, quality.camDistance], fov: quality.fov }}
       frameloop={visible ? 'always' : 'never'}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
     >
@@ -100,8 +84,7 @@ export default function StageCanvas({ progress, visible }: Props) {
 
         <WaterCeiling depth={depth} />
         <Water />
-        <KoiActor progress={progress} positionOut={koiPos} />
-        <CameraRig target={koiPos} depth={depth} />
+        <CameraRig progress={progress} depth={depth} />
       </WaterSurface>
     </Canvas>
   )

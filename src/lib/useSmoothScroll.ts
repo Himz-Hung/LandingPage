@@ -44,6 +44,12 @@ export function scrollToSection(href: string) {
   }
 }
 
+/** Về đầu trang tức thì — dùng khi đổi route, không cần thấy cảnh cuộn ngược. */
+export function scrollToTop() {
+  if (lenisInstance) lenisInstance.scrollTo(0, { immediate: true })
+  window.scrollTo(0, 0)
+}
+
 export function stopScroll() {
   lenisInstance?.stop()
 }

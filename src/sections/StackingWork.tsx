@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
+import { usePageTransition } from '../components/PageTransition'
 import { SectionHeader } from '../components/SectionHeader'
 import { works } from '../data/site'
 
@@ -21,6 +22,7 @@ function StackCard({
   work: (typeof works)[number]
   progress: ReturnType<typeof useScroll>['scrollYProgress']
 }) {
+  const { go } = usePageTransition()
   const start = index / total
   const end = (index + 1) / total
 
@@ -36,7 +38,17 @@ function StackCard({
     >
       <motion.article
         style={{ scale, y }}
-        className="relative w-full overflow-hidden rounded-3xl border border-line bg-canvas shadow-[var(--shadow-card)]"
+        onClick={() => go(`/du-an/${work.slug}`)}
+        role="link"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            go(`/du-an/${work.slug}`)
+          }
+        }}
+        data-cursor="Xem"
+        className="group relative w-full cursor-pointer overflow-hidden rounded-3xl border border-line bg-canvas shadow-[var(--shadow-card)] transition-colors duration-500 hover:border-ink"
       >
         {/* Phủ màu nền lên chính card khi nó lùi ra sau. Nằm trên nội dung
             nhưng trong lòng thẻ, nên không đụng tới card xếp phía dưới. */}
@@ -61,15 +73,13 @@ function StackCard({
               <p className="mt-4 text-sm text-muted">{work.category}</p>
             </div>
 
-            <a
-              href="#work"
-              className="group flex w-fit items-center gap-3 rounded-full border border-line px-6 py-3 text-sm font-medium transition-colors hover:border-ink"
-            >
+            {/* Chỉ còn là phần nhìn: cú bấm do cả thẻ nhận */}
+            <span className="flex w-fit items-center gap-3 rounded-full border border-line px-6 py-3 text-sm font-medium transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-on-accent">
               Xem dự án
               <span className="transition-transform duration-400 group-hover:translate-x-1">
                 →
               </span>
-            </a>
+            </span>
           </div>
 
           <div className="relative aspect-4/3 overflow-hidden md:aspect-auto">
@@ -77,7 +87,7 @@ function StackCard({
               src={work.image}
               alt={work.title}
               loading="lazy"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
             />
           </div>
         </div>

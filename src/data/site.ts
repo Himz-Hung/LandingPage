@@ -74,28 +74,96 @@ export const approach = {
 
 export const works = [
   {
+    slug: 'year-end-party-minh-phat',
     title: 'Year End Party — Tập đoàn Minh Phát',
     category: 'Tiệc cuối năm · 1.800 khách',
     year: '2026',
     image: img('event-yep'),
+    client: 'Tập đoàn Minh Phát',
+    venue: 'Trung tâm hội nghị, Quận 7',
+    duration: '6 tuần chuẩn bị',
+    summary:
+      'Một đêm tổng kết cho 1.800 nhân sự trải khắp ba miền, phần lớn lần đầu gặp nhau ngoài màn hình. Yêu cầu của ban lãnh đạo gói gọn trong một câu: đừng làm lễ trao thưởng, hãy làm một đêm mà người ta muốn ở lại tới phút cuối.',
+    scope: [
+      'Kịch bản và đạo diễn chương trình',
+      'Sân khấu trung tâm 24m kèm màn hình LED cong',
+      'Dàn đèn và âm thanh cho hội trường 2.000 chỗ',
+      'Điều phối nghệ sĩ khách mời',
+      'Quay phim, chụp ảnh, dựng recap trong 5 ngày',
+    ],
+    gallery: [img('yep-1', 1200, 900), img('yep-2', 900, 1200), img('yep-3', 1200, 900)],
   },
   {
+    slug: 'khanh-thanh-nha-may-long-an',
     title: 'Lễ khánh thành nhà máy Long An',
     category: 'Lễ khánh thành · Sân khấu ngoài trời',
     year: '2025',
     image: img('event-khanhthanh'),
+    client: 'Nam Long Foods',
+    venue: 'Khu công nghiệp Long An',
+    duration: '9 tuần chuẩn bị',
+    summary:
+      'Lễ khánh thành ngoài trời giữa mùa mưa, có lãnh đạo tỉnh và hơn 400 khách mời. Toàn bộ phương án dự phòng thời tiết được chốt trước ba tuần và tổng duyệt hai lần trong điều kiện mưa giả định.',
+    scope: [
+      'Hồ sơ xin phép và làm việc với địa phương',
+      'Sân khấu ngoài trời kèm mái che toàn phần',
+      'Nghi thức cắt băng và trình chiếu tiến trình xây dựng',
+      'Máy phát điện dự phòng và sàn thoát nước',
+      'Đón tiếp, hậu cần cho đoàn khách cấp tỉnh',
+    ],
+    gallery: [
+      img('kt-1', 1200, 900),
+      img('kt-2', 900, 1200),
+      img('kt-3', 1200, 900),
+    ],
   },
   {
+    slug: 'dai-nhac-hoi-thanh-am-mua-ha',
     title: 'Đại nhạc hội Thanh Âm Mùa Hạ',
     category: 'Lễ hội âm nhạc · 12.000 khán giả',
     year: '2025',
     image: img('event-nhachoi'),
+    client: 'Thanh Âm Mùa Hạ',
+    venue: 'Sân vận động ngoài trời',
+    duration: '12 tuần chuẩn bị',
+    summary:
+      'Mười hai nghìn khán giả, tám nghệ sĩ, năm giờ chạy liên tục không nghỉ giữa chừng. Bài toán khó nhất không phải sân khấu mà là luồng di chuyển của đám đông và phương án dự phòng cho hệ thống âm thanh công suất lớn.',
+    scope: [
+      'Sân khấu chính 32m và hai cánh gà',
+      'Hệ thống âm thanh công suất lớn kèm dàn dự phòng song song',
+      'Dàn đèn và hiệu ứng theo từng tiết mục',
+      'Điều phối nghệ sĩ và lịch chạy kỹ thuật',
+      'Phối hợp an ninh và phân luồng khán giả',
+    ],
+    gallery: [
+      img('nh-1', 1200, 900),
+      img('nh-2', 900, 1200),
+      img('nh-3', 1200, 900),
+    ],
   },
   {
+    slug: 'hoi-nghi-khach-hang-vietcare',
     title: 'Hội nghị khách hàng Vietcare',
     category: 'Hội nghị · Sân khấu LED cong',
     year: '2024',
     image: img('event-hoinghi'),
+    client: 'Vietcare',
+    venue: 'Khách sạn 5 sao, Quận 1',
+    duration: '5 tuần chuẩn bị',
+    summary:
+      'Hội nghị thường niên cho 600 đại lý toàn quốc, trọng tâm là màn công bố dòng sản phẩm mới. Bản dựng 3D sân khấu được ban giám đốc duyệt ngay vòng đầu, rút ngắn khâu chốt thiết kế xuống còn một tuần.',
+    scope: [
+      'Thiết kế sân khấu LED cong kèm phối cảnh 3D',
+      'Kịch bản công bố sản phẩm và hiệu ứng trình chiếu',
+      'Khu trải nghiệm sản phẩm cho đại lý',
+      'Âm thanh ánh sáng cho hội trường 700 chỗ',
+      'Vận hành và điều phối trong ngày',
+    ],
+    gallery: [
+      img('hn-1', 1200, 900),
+      img('hn-2', 900, 1200),
+      img('hn-3', 1200, 900),
+    ],
   },
 ]
 
@@ -282,22 +350,125 @@ export const faqs = [
 
 export const journal = [
   {
+    slug: 'dung-3d-san-khau-truoc-khi-thi-cong',
     title: 'Vì sao nên dựng 3D sân khấu trước khi thi công',
     date: '18.08.2026',
     readTime: '5 phút đọc',
     image: img('journal-3d', 1200, 800),
+    author: 'Tạ Khoa',
+    excerpt:
+      'Một bản dựng 3D tốn hai ngày công có thể tiết kiệm cả tuần thi công và vài chục triệu tiền sửa sai. Đây là những gì nó giúp phát hiện sớm.',
+    body: [
+      {
+        type: 'p',
+        text: 'Khách thường hỏi vì sao phải mất thêm hai ngày dựng 3D trong khi bản vẽ mặt bằng đã có đủ kích thước. Câu trả lời ngắn: bản vẽ mặt bằng cho biết thứ gì nằm ở đâu, còn bản dựng 3D cho biết khán giả sẽ nhìn thấy gì.',
+      },
+      { type: 'h', text: 'Nó phát hiện sớm ba thứ' },
+      {
+        type: 'list',
+        items: [
+          'Góc chết. Chỗ nào khán giả bị cột hoặc giàn đèn che mất sân khấu, thấy ngay trên bản dựng thay vì thấy vào tối diễn.',
+          'Tỉ lệ chữ trên màn LED. Tên thương hiệu trông vừa vặn trên màn hình máy tính nhưng nhỏ hơn nắm tay khi nhìn từ hàng ghế cuối.',
+          'Đường đi của khách. Lối vào, khu check-in và quầy nước nếu nằm sai chỗ sẽ tạo nút thắt ngay mười lăm phút đầu.',
+        ],
+      },
+      {
+        type: 'quote',
+        text: 'Sửa một chi tiết trên bản dựng mất mười lăm phút. Sửa đúng chi tiết đó khi giàn đã dựng mất nửa ngày và tiền thuê thiết bị vẫn tính đủ.',
+      },
+      { type: 'h', text: 'Nó rút ngắn khâu duyệt' },
+      {
+        type: 'p',
+        text: 'Đây mới là lợi ích lớn nhất mà ít người nghĩ tới. Khi trình bày bằng bản vẽ kỹ thuật, mỗi người trong phòng họp hình dung một kiểu khác nhau, và tranh luận kéo dài vì không ai nói về cùng một thứ. Đưa ra bản dựng 3D thì cả phòng nhìn chung một hình ảnh, góp ý chuyển ngay từ mơ hồ sang cụ thể.',
+      },
+      {
+        type: 'p',
+        text: 'Ở hội nghị khách hàng gần nhất chúng tôi làm, ban giám đốc duyệt ngay vòng đầu. Khâu chốt thiết kế rút từ ba tuần xuống còn một, và toàn bộ thời gian tiết kiệm được dồn hết vào chạy kỹ thuật.',
+      },
+    ],
   },
   {
+    slug: 'checklist-su-kien-ngoai-troi-mua-mua',
     title: 'Checklist chuẩn bị cho sự kiện ngoài trời mùa mưa',
     date: '02.07.2026',
     readTime: '8 phút đọc',
     image: img('journal-mua', 1200, 800),
+    author: 'Tạ Khoa',
+    excerpt:
+      'Mưa không phải rủi ro bất ngờ ở Việt Nam, nó là điều kiện mặc định từ tháng năm tới tháng mười một. Kế hoạch phải viết theo hướng đó ngay từ đầu.',
+    body: [
+      {
+        type: 'p',
+        text: 'Sai lầm phổ biến nhất là coi mưa như tình huống phát sinh rồi mới tính phương án ứng phó. Ở miền Nam, từ tháng năm tới tháng mười một, mưa là điều kiện mặc định. Kế hoạch nên viết cho trời mưa, còn trời nắng thì coi như được thêm.',
+      },
+      { type: 'h', text: 'Bảy ngày trước' },
+      {
+        type: 'list',
+        items: [
+          'Theo dõi dự báo theo giờ, không phải theo ngày. Một cơn mưa lúc mười sáu giờ và một cơn lúc mười chín giờ đòi hỏi hai kịch bản hoàn toàn khác nhau.',
+          'Chốt kịch bản rút gọn. Tiết mục nào cắt được, cắt theo thứ tự nào, ai là người ra quyết định cắt.',
+          'Xác nhận lại số lượng bạt phủ thiết bị và vị trí cất giữ khi cần dùng gấp.',
+        ],
+      },
+      { type: 'h', text: 'Ngày thi công' },
+      {
+        type: 'list',
+        items: [
+          'Sàn sân khấu phải cao hơn mặt đất tối thiểu 40cm và có rãnh thoát ở hai bên.',
+          'Toàn bộ ổ điện nâng khỏi mặt đất, không đặt trực tiếp lên sàn dù có che.',
+          'Mái che phải phủ quá mép sân khấu ít nhất một mét, vì mưa ở đây thường tạt ngang chứ không rơi thẳng.',
+          'Máy phát điện đặt nơi cao ráo, có mái riêng, và thử tải đủ công suất trước khi khách tới.',
+        ],
+      },
+      {
+        type: 'quote',
+        text: 'Lần gần nhất mưa ập xuống trước giờ khai mạc bốn mươi phút. Đội kỹ thuật che chắn xong trong hai mươi phút và chương trình vẫn bắt đầu đúng giờ. Khách mời không hề biết đã có chuyện gì.',
+      },
+      { type: 'h', text: 'Thứ hay bị quên' },
+      {
+        type: 'p',
+        text: 'Lối đi của khách. Phần lớn kế hoạch chống mưa tập trung vào sân khấu và thiết bị, trong khi thứ quyết định trải nghiệm lại là quãng đường từ chỗ đậu xe tới chỗ ngồi. Không có mái che ở đoạn đó thì khách ướt từ trước khi chương trình bắt đầu, và mọi thứ sau đó đều bị nhìn qua tâm trạng ấy.',
+      },
+    ],
   },
   {
+    slug: 'tinh-cong-suat-am-thanh-theo-so-khan-gia',
     title: 'Tính công suất âm thanh theo số lượng khán giả',
     date: '11.05.2026',
     readTime: '6 phút đọc',
     image: img('journal-amthanh', 1200, 800),
+    author: 'Tạ Khoa',
+    excerpt:
+      'Không có công thức nào áp dụng được cho mọi trường hợp, nhưng có vài mốc tham chiếu giúp bạn biết báo giá mình nhận được là hợp lý hay đang thiếu.',
+    body: [
+      {
+        type: 'p',
+        text: 'Câu hỏi hay gặp nhất khi khách so sánh báo giá: vì sao cùng một sự kiện mà nơi này báo hai dàn loa, nơi kia báo sáu. Phần lớn chênh lệch không nằm ở chuyện ai đắt hơn, mà ở chỗ hai bên hiểu khác nhau về không gian.',
+      },
+      { type: 'h', text: 'Ba yếu tố quyết định, không phải một' },
+      {
+        type: 'list',
+        items: [
+          'Số lượng khán giả chỉ cho biết cần phủ âm tới đâu, không cho biết cần bao nhiêu công suất.',
+          'Thể tích không gian mới là thứ quyết định. Một trăm khách trong hội trường trần cao sáu mét cần nhiều hơn ba trăm khách ngoài trời.',
+          'Chất liệu bề mặt. Phòng nhiều kính và bê tông dội âm mạnh, cần xử lý khác hẳn phòng trải thảm có rèm.',
+        ],
+      },
+      { type: 'h', text: 'Mốc tham chiếu nhanh' },
+      {
+        type: 'p',
+        text: 'Với sự kiện trong nhà, trần dưới năm mét, nói chuyện và nhạc nền là chính: khoảng 3 tới 5 watt cho mỗi khách là đủ. Có ca nhạc sống thì tăng gấp đôi. Ngoài trời không có tường phản xạ, phải tính gấp ba tới bốn lần so với trong nhà cùng số khách.',
+      },
+      {
+        type: 'quote',
+        text: 'Con số quan trọng hơn công suất là độ phủ. Một dàn mạnh đặt sai chỗ khiến hàng đầu chói tai còn hàng cuối nghe không rõ.',
+      },
+      { type: 'h', text: 'Thứ nên hỏi khi nhận báo giá' },
+      {
+        type: 'p',
+        text: 'Đừng hỏi tổng công suất bao nhiêu watt. Hãy hỏi có bao nhiêu điểm phát, đặt ở đâu, và có dàn dự phòng chạy song song hay không. Ba câu đó cho biết nhiều về chất lượng hơn mọi con số công suất ghi trên báo giá.',
+      },
+    ],
   },
 ]
 

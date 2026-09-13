@@ -1,11 +1,13 @@
 import { motion } from 'motion/react'
 import { useState } from 'react'
+import { usePageTransition } from '../components/PageTransition'
 import { Reveal } from '../components/Reveal'
 import { SectionHeader } from '../components/SectionHeader'
 import { journal } from '../data/site'
 import { EASE_OUT_EXPO } from '../lib/motion'
 
 export function Journal() {
+  const { go } = usePageTransition()
   const [hovered, setHovered] = useState<number | null>(null)
 
   return (
@@ -15,10 +17,10 @@ export function Journal() {
       <div className="mt-16 grid gap-8 md:grid-cols-3">
         {journal.map((post, i) => (
           <Reveal key={post.title} delay={i * 0.1}>
-            <a
-              href="#journal"
+            <button
+              onClick={() => go(`/tin-tuc/${post.slug}`)}
               data-cursor="Đọc"
-              className="group block"
+              className="group block w-full text-left"
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
             >
@@ -44,7 +46,7 @@ export function Journal() {
                   {post.title}
                 </span>
               </h3>
-            </a>
+            </button>
           </Reveal>
         ))}
       </div>

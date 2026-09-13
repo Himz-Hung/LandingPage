@@ -1,21 +1,20 @@
 import { AnimatePresence } from 'motion/react'
 import { useEffect, useState } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Cursor } from './components/Cursor'
 import { Grain } from './components/Grain'
 import { Navbar } from './components/Navbar'
+import { PageTransition } from './components/PageTransition'
 import { Preloader } from './components/Preloader'
 import { ScrollProgress } from './components/ScrollProgress'
 import { SectionThemeProvider } from './lib/SectionTheme'
 import { useSmoothScroll } from './lib/useSmoothScroll'
+import { Home } from './routes/Home'
+import { JournalDetail } from './routes/JournalDetail'
+import { ProjectDetail } from './routes/ProjectDetail'
 import { StageScene } from './three/StageScene'
-import { Contact } from './sections/Contact'
-import { Hero } from './sections/Hero'
-import { Journal } from './sections/Journal'
-import { Partners } from './sections/Partners'
-import { StackingWork } from './sections/StackingWork'
-import { Testimonials } from './sections/Testimonials'
 
-function App() {
+function Shell() {
   useSmoothScroll()
   const [loading, setLoading] = useState(true)
 
@@ -29,7 +28,11 @@ function App() {
 
   return (
     <SectionThemeProvider>
-      {/* Cảnh 3D duy nhất, nằm cố định sau toàn bộ trang */}
+      {/*
+        Cảnh 3D nằm NGOÀI phần đổi trang. Nếu đặt trong Routes thì mỗi lần
+        chuyển trang canvas bị tháo rồi dựng lại: mất vài trăm mili giây khởi
+        tạo WebGL, con cá nhảy về vị trí đầu, mặt nước mất sạch gợn đang lan.
+      */}
       <StageScene />
 
       <Cursor />
@@ -40,18 +43,25 @@ function App() {
         {loading && <Preloader key="preloader" onDone={() => setLoading(false)} />}
       </AnimatePresence>
 
-      <Navbar />
+      <PageTransition>
+        <Navbar />
 
-      <main className="relative z-10">
-        <Hero />
-        <StackingWork />
-        <Partners />
-        <Testimonials />
-        <Journal />
-      </main>
-
-      <Contact />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/du-an/:slug" element={<ProjectDetail />} />
+          <Route path="/tin-tuc/:slug" element={<JournalDetail />} />
+          <Route path="*" element={<ProjectDetail />} />
+        </Routes>
+      </PageTransition>
     </SectionThemeProvider>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Shell />
+    </BrowserRouter>
   )
 }
 
